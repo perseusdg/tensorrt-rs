@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(LibTRT LANGUAGES CXX CUDA)
 
-if(DEFINED TRT7)
+if(DEFINED TRT8)
+    message(STATUS "TRT8 is defined")
+    add_compile_definitions(TRT8)
+elseif(DEFINED TRT7)
     message(STATUS "TRT7 is defined")
     add_compile_definitions(TRT7)
 elseif(DEFINED TRT6)
@@ -14,7 +17,7 @@ endif()
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "-fPIC -O3 -Wall -Wextra -Werror -Wno-unknown-pragmas -Wno-deprecated -Wno-deprecated-declarations")
+set(CMAKE_CXX_FLAGS "-fPIC -O3 -Wall -Wextra  -Wno-unknown-pragmas -Wno-deprecated -Wno-deprecated-declarations")
 
 file(GLOB source_files
         "TRTLogger/*.cpp"

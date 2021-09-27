@@ -17,6 +17,8 @@ trt-6 = []
 
 trt-7 = []
 
+trt-8 = []
+
 [dependencies]
 libc = "0.*"
 

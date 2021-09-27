@@ -26,14 +26,19 @@ nvinfer1::Dims3 create_dims3(int dim1, int dim2, int dim3) {
     return nvinfer1::Dims3(dim1, dim2, dim3);
 }
 
-nvinfer1::DimsCHW create_dimsCHW(int channels, int height, int width) {
-    return nvinfer1::DimsCHW(channels, height, width);
-}
+
 
 nvinfer1::Dims4 create_dims4(int dim1, int dim2, int dim3, int dim4) {
     return nvinfer1::Dims4(dim1, dim2, dim3, dim4);
 }
 
+#if defined(TRT7) || defined(TRT6) || defined(TRT5)
 nvinfer1::DimsNCHW create_dimsNCHW(int batchSize, int channel, int height, int width) {
     return nvinfer1::DimsNCHW(batchSize, channel, height, width);
 }
+
+nvinfer1::DimsCHW create_dimsCHW(int channels, int height, int width) {
+    return nvinfer1::DimsCHW(channels, height, width);
+}
+
+#endif

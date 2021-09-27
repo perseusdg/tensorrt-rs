@@ -1,5 +1,6 @@
 use bindgen::builder;
 use cmake::Config;
+use std::env;
 
 fn cuda_configuration() {
     let cudadir = match option_env!("CUDA_INSTALL_DIR") {
@@ -68,6 +69,21 @@ fn main() -> Result<(), ()> {
         cfg.define("TRT7", "");
         let bindings = builder()
             .clang_arg("-DTRT7")
+            .clang_args(&["-x", "c++"])
+            .header("trt-sys/tensorrt_api.h")
+            .size_t_is_usize(true)
+            .generate()?;
+
+        bindings.write_to_file("src/bindings.rs").unwrap();
+    }
+
+    #[cfg(feature = "trt-8")]
+    {
+        println!("Setting Config to TRT8");
+        cfg.define("TRT8", "");
+        let bindings = builder()
+            .clang_arg("-DTRT8")
+            .clang_arg("-I/usr/local/cuda-11.3/include")
             .clang_args(&["-x", "c++"])
             .header("trt-sys/tensorrt_api.h")
             .size_t_is_usize(true)
