@@ -15,9 +15,6 @@ nvinfer1::ICudaEngine *build_cuda_engine_with_config(nvinfer1::IBuilder *builder
 nvinfer1::IBuilder *create_infer_builder(Logger_t *logger);
 nvinfer1::IBuilderConfig* create_infer_builder_config(nvinfer1::IBuilder *builder);
 void builder_config_set_max_workspace_size(nvinfer1::IBuilderConfig* config,size_t batch_size);
-void builder_config_set_debug_flag(nvinfer1::IBuilderConfig* config);
-void builder_config_set_fp16(nvinfer1::IBuilderConfig* config);
-void builder_config_set_int8(nvinfer1::IBuilderConfig* config);
 void builder_config_set_dla_core(nvinfer1::IBuilderConfig* config,int dla_core);
 int builder_config_get_dla_core(nvinfer1::IBuilderConfig* config);
 void builder_config_set_default_global_device_type(nvinfer1::IBuilderConfig* config,DeviceType_t deviceType);
@@ -48,7 +45,6 @@ void builder_config_set_tf32(nvinfer1::IBuilderConfig* config,bool mode);
 bool builder_config_get_tf32(nvinfer1::IBuilderConfig* config);
 void builder_config_set_safety_scope(nvinfer1::IBuilderConfig* config,bool mode);
 bool builder_config_get_safety_scope(nvinfer1::IBuilderConfig* config);
-void builder_config_set_max_workspace_size(nvinfer1::IBuilderConfig* config,int32_t workspace_size);
 size_t builder_config_get_max_workspace_size(nvinfer1::IBuilderConfig* config);
 void builder_config_set_engine_capability(nvinfer1::IBuilderConfig* config,EngineCapabiliy_t engineCapabiliy);
 EngineCapabiliy_t builder_config_get_engine_capability(nvinfer1::IBuilderConfig* config);

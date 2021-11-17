@@ -28,18 +28,6 @@ void builder_config_set_max_workspace_size(nvinfer1::IBuilderConfig* config,size
     config->setMaxWorkspaceSize(batch_size);
 }
 
-void builder_config_set_debug_flag(nvinfer1::IBuilderConfig* config){
-    config->setFlag(nvinfer1::BuilderFlag::kDEBUG);
-}
-
-void builder_config_set_fp16(nvinfer1::IBuilderConfig* config){
-    config->setFlag(nvinfer1::BuilderFlag::kFP16);
-}
-
-void builder_config_set_int8(nvinfer1::IBuilderConfig* config){
-    config->setFlag(nvinfer1::BuilderFlag::kINT8);
-}
-
 void builder_config_set_dla_core(nvinfer1::IBuilderConfig* config,int dla_core){
     config->setDLACore(dla_core);
 }
@@ -186,9 +174,6 @@ bool builder_config_get_safety_scope(nvinfer1::IBuilderConfig* config){
     return config->getFlag(nvinfer1::BuilderFlag::kSAFETY_SCOPE);
 }
 
-void builder_config_set_max_workspace_size(nvinfer1::IBuilderConfig* config,int32_t workspace_size){
-    config->setMaxWorkspaceSize(workspace_size);
-}
 
 size_t builder_config_get_max_workspace_size(nvinfer1::IBuilderConfig* config){
     return config->getMaxWorkspaceSize();

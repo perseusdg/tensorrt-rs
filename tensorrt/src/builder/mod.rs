@@ -16,20 +16,20 @@ use tensorrt_sys::create_network;
 use tensorrt_sys::create_network_v2;
 
 use tensorrt_sys::{
-    build_cuda_engine, builder_config_set_gpu_fallback, builder_can_run_on_dla,
-    builder_get_average_find_iterations, builder_get_debug_sync, builder_get_default_device_type,
-    builder_get_device_type, builder_get_dla_core, builder_get_engine_capability,
-    builder_get_fp16_mode, builder_get_half2_mode, builder_get_int8_mode,
-    builder_get_max_batch_size, builder_get_max_dla_batch_size, builder_get_max_workspace_size,
-    builder_get_min_find_iterations, builder_get_nb_dla_cores, builder_get_refittable,
-    builder_get_strict_type_constraints, builder_is_device_type_set,
-    builder_platform_has_fast_fp16, builder_platform_has_fast_int8, builder_reset,
-    builder_reset_device_type, builder_set_average_find_iterations, builder_set_debug_sync,
-    builder_set_default_device_type, builder_set_device_type, builder_set_dla_core,
-    builder_set_engine_capability, builder_set_fp16_mode, builder_set_half2_mode,
-    builder_set_int8_mode, builder_set_max_batch_size, builder_set_max_workspace_size,
-    builder_set_min_find_iterations, builder_set_refittable, builder_set_strict_type_constraints,
-    create_infer_builder, destroy_builder,
+    build_cuda_engine_with_config,create_infer_builder,create_infer_builder_config,
+    builder_config_set_max_workspace_size,builder_config_set_dla_core,builder_config_get_dla_core,
+    builder_config_set_default_global_device_type,builder_config_set_gpu_fallback,
+    builder_config_set_avg_timing_iterations,builder_config_set_min_timing_iterations,builder_config_set_int8_mode,
+    builder_config_set_fp16_mode,builder_config_get_int8_mode,builder_config_get_fp16_mode,builder_config_get_default_global_device_type,
+    builder_config_set_device_type_layer,builder_config_get_device_type_layer,builder_config_is_device_type_set,
+    builder_config_reset_device_type,builder_config_run_on_dla,builder_config_set_strict_type_constraints,
+    builder_config_get_strict_type_constraints,builder_config_set_refittable_engine,builder_config_get_refittable_engine,
+    builder_config_set_debug_sync,builder_config_get_debug_sync,builder_config_set_sparse_weights,builder_config_get_sparse_weights,
+    builder_config_set_disable_timing_cache,builder_config_get_disable_timing_cache,builder_config_set_tf32,builder_config_get_tf32,
+    builder_config_set_safety_scope,builder_config_get_safety_scope,builder_config_get_max_workspace_size,
+    builder_config_set_engine_capability,builder_config_get_engine_capability,builder_config_set_profile_stream,builder_config_get_profile_stream,
+    builder_config_reset,destroy_builder,builder_set_max_batch_size,builder_platform_has_fast_fp16,builder_platform_has_fast_int8,
+    builder_get_max_batch_size,builder_get_max_dla_batch_size,builder_get_nb_dla_cores,create_network_v2,builder_reset
 };
 
 #[repr(C)]
@@ -49,6 +49,7 @@ pub enum EngineCapability {
 
 pub struct Builder<'a> {
     pub(crate) internal_builder: *mut tensorrt_sys::nvinfer1_IBuilder,
+    pub(crate) internal_builder_config *mut tensorrt_sys::nvinfer1_IBuilderConfig,
     pub(crate) logger: PhantomData<&'a Logger>,
 }
 
