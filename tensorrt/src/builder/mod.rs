@@ -16,7 +16,7 @@ use tensorrt_sys::create_network;
 use tensorrt_sys::create_network_v2;
 
 use tensorrt_sys::{
-    build_cuda_engine, builder_allow_gpu_fallback, builder_can_run_on_dla,
+    build_cuda_engine, builder_config_set_gpu_fallback, builder_can_run_on_dla,
     builder_get_average_find_iterations, builder_get_debug_sync, builder_get_default_device_type,
     builder_get_device_type, builder_get_dla_core, builder_get_engine_capability,
     builder_get_fp16_mode, builder_get_half2_mode, builder_get_int8_mode,

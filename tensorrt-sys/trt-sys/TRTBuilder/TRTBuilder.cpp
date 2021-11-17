@@ -16,136 +16,13 @@ int32_t builder_get_max_batch_size(nvinfer1::IBuilder* builder) {
     return builder->getMaxBatchSize();
 }
 
-#if defined(TRT7) || defined(TRT6)
-void builder_set_max_workspace_size(nvinfer1::IBuilder* builder, size_t workspace_size) {
-    builder->setMaxWorkspaceSize(workspace_size);
+nvinfer1::ICudaEngine *build_cuda_engine_with_config(nvinfer1::IBuilder *builder,nvinfer1::IBuilderConfig* config,nvinfer1::INetworkDefinition *network){
+    return builder->buildEngineWithConfig(*network,*config);
 }
 
-size_t builder_get_max_workspace_size(nvinfer1::IBuilder* builder) {
-    return builder->getMaxWorkspaceSize();
-}
 
-void builder_set_half2_mode(nvinfer1::IBuilder* builder, bool mode) {
-    builder->setHalf2Mode(mode);
-}
-
-bool builder_get_half2_mode(nvinfer1::IBuilder* builder) {
-    return builder->getHalf2Mode();
-}
-
-void builder_set_debug_sync(nvinfer1::IBuilder* builder, bool sync) {
-    builder->setDebugSync(sync);
-}
-
-bool builder_get_debug_sync(nvinfer1::IBuilder* builder) {
-    return builder->getDebugSync();
-}
-
-void builder_set_min_find_iterations(nvinfer1::IBuilder* builder, int min_find) {
-    builder->setMinFindIterations(min_find);
-}
-
-int builder_get_min_find_iterations(nvinfer1::IBuilder* builder) {
-    return builder->getMinFindIterations();
-}
-
-void builder_set_average_find_iterations(nvinfer1::IBuilder* builder, int avg_find) {
-    builder->setAverageFindIterations(avg_find);
-}
-
-int builder_get_average_find_iterations(nvinfer1::IBuilder* builder) {
-    return builder->getAverageFindIterations();
-}
-
-void builder_set_int8_mode(nvinfer1::IBuilder* builder, bool mode) {
-    builder->setInt8Mode(mode);
-}
-
-bool builder_get_int8_mode(nvinfer1::IBuilder* builder) {
-    return builder->getInt8Mode();
-}
-
-void builder_set_fp16_mode(nvinfer1::IBuilder* builder, bool mode) {
-    builder->setFp16Mode(mode);
-}
-
-bool builder_get_fp16_mode(nvinfer1::IBuilder* builder) {
-    return builder->getFp16Mode();
-}
-void builder_set_device_type(nvinfer1::IBuilder* builder, nvinfer1::ILayer* layer, DeviceType_t deviceType) {
-    builder->setDeviceType(layer, static_cast<nvinfer1::DeviceType>(deviceType));
-}
-
-DeviceType_t builder_get_device_type(nvinfer1::IBuilder* builder, nvinfer1::ILayer* layer) {
-    return static_cast<DeviceType_t>(builder->getDeviceType(layer));
-}
-
-bool builder_is_device_type_set(nvinfer1::IBuilder* builder, nvinfer1::ILayer* layer) {
-    return builder->isDeviceTypeSet(layer);
-}
-
-void builder_set_default_device_type(nvinfer1::IBuilder* builder, DeviceType_t deviceType) {
-    builder->setDefaultDeviceType(static_cast<nvinfer1::DeviceType>(deviceType));
-}
-
-DeviceType_t builder_get_default_device_type(nvinfer1::IBuilder *builder) {
-    return static_cast<DeviceType_t>(builder->getDefaultDeviceType());
-}
-
-void builder_reset_device_type(nvinfer1::IBuilder* builder, nvinfer1::ILayer* layer) {
-   builder->resetDeviceType(layer);
-}
-
-bool builder_can_run_on_dla(nvinfer1::IBuilder* builder, nvinfer1::ILayer* layer) {
-    return builder->canRunOnDLA(layer);
-}
-
-void builder_allow_gpu_fallback(nvinfer1::IBuilder* builder, bool set_fallback_mode) {
-    builder->allowGPUFallback(set_fallback_mode);
-}
-
-void builder_set_refittable(nvinfer1::IBuilder* builder, bool can_refit) {
-    builder->setRefittable(can_refit);
-}
-
-bool builder_get_refittable(nvinfer1::IBuilder* builder) {
-    return builder->getRefittable();
-}
-
-void builder_set_engine_capability(nvinfer1::IBuilder* builder, EngineCapabiliy_t engine_capability) {
-    builder->setEngineCapability(static_cast<nvinfer1::EngineCapability>(engine_capability));
-}
-
-void builder_set_dla_core(nvinfer1::IBuilder* builder, int dla_core) {
-    builder->setDLACore(dla_core);
-}
-
-int builder_get_dla_core(nvinfer1::IBuilder* builder) {
-    return builder->getDLACore();
-}
-
-void builder_set_strict_type_constraints(nvinfer1::IBuilder* builder, bool mode) {
-    builder->setStrictTypeConstraints(mode);
-}
-
-bool builder_get_strict_type_constraints(nvinfer1::IBuilder* builder) {
-    return builder->getStrictTypeConstraints();
-}
-
-EngineCapabiliy_t builder_get_engine_capability(nvinfer1::IBuilder* builder) {
-    return static_cast<EngineCapabiliy_t>(builder->getEngineCapability());
-}
-
-nvinfer1::ICudaEngine *build_cuda_engine(nvinfer1::IBuilder *builder, nvinfer1::INetworkDefinition *network) {
-    return builder->buildCudaEngine(*network);
-}
-
-#endif 
-
-#ifdef defined(TRT8)
-
-void create_infer_builder_config(nvinfer::IBuilder *builder,nvinfer::IBuilderConfig* config){
-    config = builder->createBuilderConfig();
+nvinfer1::IBuilderConfig* create_infer_builder_config(nvinfer1::IBuilder *builder){
+    return builder->createBuilderConfig();
 }
 void builder_config_set_max_workspace_size(nvinfer1::IBuilderConfig* config,size_t batch_size){
     config->setMaxWorkspaceSize(batch_size);
@@ -167,11 +44,15 @@ void builder_config_set_dla_core(nvinfer1::IBuilderConfig* config,int dla_core){
     config->setDLACore(dla_core);
 }
 
-void builder_config_set_default_device_type_dla(nvinfer1::IBuilderConfig* config){
-    config->setDefaultDeviceType(nvinfer1::BuilderFlag::kDLA);
+int builder_config_get_dla_core(nvinfer1::IBuilderConfig* config){
+    return(config->getDLACore());
 }
 
-void builder_config_set_gpu_fallback(){
+void builder_config_set_default_global_device_type(nvinfer1::IBuilderConfig* config,DeviceType_t deviceType){
+    config->setDefaultDeviceType(static_cast<nvinfer1::DeviceType>(deviceType));
+}
+
+void builder_config_set_gpu_fallback(nvinfer1::IBuilderConfig* config){
     config->setFlag(nvinfer1::BuilderFlag::kGPU_FALLBACK);
 }
 
@@ -183,12 +64,156 @@ void builder_config_set_min_timing_iterations(nvinfer1::IBuilderConfig* config,i
     config->setMinTimingIterations(time);
 }
 
+void builder_config_set_int8_mode(nvinfer1::IBuilderConfig* config){
+    config->setFlag(nvinfer1::BuilderFlag::kINT8);
+}
+
+bool builder_config_get_int8_mode(nvinfer1::IBuilderConfig* config){
+    return config->getFlag(nvinfer1::BuilderFlag::kINT8);
+}
+
+void builder_config_set_fp16_mode(nvinfer1::IBuilderConfig* config){
+    config->setFlag(nvinfer1::BuilderFlag::kFP16);
+}
+
+bool builder_config_get_fp16_mode(nvinfer1::IBuilderConfig* config){
+    config->getFlag(nvinfer1::BuilderFlag::kFP16);
+}
+
+DeviceType_t builder_config_get_default_global_device_type(nvinfer1::IBuilderConfig *config){
+    return static_cast<DeviceType_t>(config->getDefaultDeviceType());
+}
+void builder_config_set_device_type_layer(nvinfer1::IBuilderConfig* config,nvinfer1::ILayer* layer,DeviceType_t deviceType){
+    config->setDeviceType(layer,static_cast<nvinfer1::DeviceType>(deviceType));
+}
+DeviceType_t builder_config_get_device_type_layer(nvinfer1::IBuilderConfig* config,nvinfer1::ILayer* layer){
+    return static_cast<DeviceType_t>(config->getDeviceType(layer));
+}
+
+bool builder_config_is_device_type_set(nvinfer1::IBuilderConfig* config,nvinfer1::ILayer* layer){
+    return(config->isDeviceTypeSet(layer));
+}
+
+void builder_config_reset_device_type(nvinfer1::IBuilderConfig* config,nvinfer1::ILayer* layer){
+    config->resetDeviceType(layer);
+}
+
+bool builder_config_run_on_dla(nvinfer1::IBuilderConfig* config,nvinfer1::ILayer* layer){
+    return(config->canRunOnDLA(layer));
+}
+
+void builder_config_set_strict_type_constraints(nvinfer1::IBuilderConfig* config,bool mode){
+    if(mode) {
+        config->setFlag(nvinfer1::BuilderFlag::kSTRICT_TYPES);
+    }else{
+        config->clearFlag(nvinfer1::BuilderFlag::kSTRICT_TYPES);
+    }
+}
+
+bool builder_config_get_strict_type_constraints(nvinfer1::IBuilderConfig* config){
+    return config->getFlag(nvinfer1::BuilderFlag::kSTRICT_TYPES);
+
+}
+
+void builder_config_set_refittable_engine(nvinfer1::IBuilderConfig* config,bool can_refit){
+    if(can_refit){
+        config->setFlag(nvinfer1::BuilderFlag::kREFIT);
+    }else{
+        config->clearFlag(nvinfer1::BuilderFlag::kREFIT);
+    }
+}
+
+bool builder_config_get_refittable_engine(nvinfer1::IBuilderConfig*config){
+    return config->getFlag(nvinfer1::BuilderFlag::kREFIT);
+}
+
+void builder_config_set_debug_sync(nvinfer1::IBuilderConfig* config,bool sync){
+    if(sync){
+        config->setFlag(nvinfer1::BuilderFlag::kDEBUG);
+    }else{
+        config->clearFlag(nvinfer1::BuilderFlag::kDEBUG);
+    }
+}
+
+bool builder_config_get_debug_sync(nvinfer1::IBuilderConfig* config){
+    return config->getFlag(nvinfer1::BuilderFlag::kDEBUG);
+}
+
+void builder_config_set_sparse_weights(nvinfer1::IBuilderConfig* config,bool mode){
+    if(mode){
+        config->setFlag(nvinfer1::BuilderFlag::kSPARSE_WEIGHTS);
+    }else{
+        config->clearFlag(nvinfer1::BuilderFlag::kSPARSE_WEIGHTS);
+    }
+}
+
+bool builder_config_get_sparse_weights(nvinfer1::IBuilderConfig* config){
+    return config->getFlag(nvinfer1::BuilderFlag::kSPARSE_WEIGHTS);
+}
+
+void builder_config_set_disable_timing_cache(nvinfer1::IBuilderConfig* config,bool mode){
+    if(mode){
+        config->setFlag(nvinfer1::BuilderFlag::kDISABLE_TIMING_CACHE);
+    }else{
+        config->clearFlag(nvinfer1::BuilderFlag::kDISABLE_TIMING_CACHE);
+    }
+}
+
+bool builder_config_get_disable_timing_cache(nvinfer1::IBuilderConfig* config){
+    return config->getFlag(nvinfer1::BuilderFlag::kDISABLE_TIMING_CACHE);
+}
+void builder_config_set_tf32(nvinfer1::IBuilderConfig* config,bool mode){
+    if(mode){
+        config->setFlag(nvinfer1::BuilderFlag::kTF32);
+    }else{
+        config->clearFlag(nvinfer1::BuilderFlag::kTF32);
+    }
+}
+
+bool builder_config_get_tf32(nvinfer1::IBuilderConfig* config){
+    return config->getFlag(nvinfer1::BuilderFlag::kTF32);
+}
+
+void builder_config_set_safety_scope(nvinfer1::IBuilderConfig* config,bool mode){
+    if(mode){
+        config->setFlag(nvinfer1::BuilderFlag::kSAFETY_SCOPE);
+    }else{
+        config->clearFlag(nvinfer1::BuilderFlag::kSAFETY_SCOPE);
+    }
+}
+
+bool builder_config_get_safety_scope(nvinfer1::IBuilderConfig* config){
+    return config->getFlag(nvinfer1::BuilderFlag::kSAFETY_SCOPE);
+}
+
+void builder_config_set_max_workspace_size(nvinfer1::IBuilderConfig* config,int32_t workspace_size){
+    config->setMaxWorkspaceSize(workspace_size);
+}
+
+size_t builder_config_get_max_workspace_size(nvinfer1::IBuilderConfig* config){
+    return config->getMaxWorkspaceSize();
+}
+
+void builder_config_set_engine_capability(nvinfer1::IBuilderConfig* config,EngineCapabiliy_t engineCapabiliy){
+    config->setEngineCapability(static_cast<nvinfer1::EngineCapability>(engineCapabiliy));
+}
+EngineCapabiliy_t builder_config_get_engine_capability(nvinfer1::IBuilderConfig* config){
+    return static_cast<EngineCapabiliy_t>(config->getEngineCapability());
+}
+
+void builder_config_set_profile_stream(nvinfer1::IBuilderConfig* config,cudaStream_t stream){
+    config->setProfileStream(stream);
+}
+
+cudaStream_t builder_config_get_profile_stream(nvinfer1::IBuilderConfig* config){
+    return config->getProfileStream();
+}
+
+
+
 void builder_config_reset(nvinfer1::IBuilderConfig* config){
     config->reset();
 }
-
-#endif
-
 
 bool builder_platform_has_fast_fp16(nvinfer1::IBuilder* builder){
     return builder->platformHasFastFp16();

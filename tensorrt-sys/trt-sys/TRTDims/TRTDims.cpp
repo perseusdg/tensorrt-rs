@@ -9,8 +9,6 @@ nvinfer1::Dims create_dims(int nb_dims, const int* d, const DimensionType_t *dim
     nvinfer1::Dims dims{};
     dims.nbDims = nb_dims;
     memcpy(dims.d, d, nvinfer1::Dims::MAX_DIMS * sizeof(int));
-    memcpy(dims.type, dimension_types, nvinfer1::Dims::MAX_DIMS * sizeof(DimensionType));
-
     return dims;
 }
 
