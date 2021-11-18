@@ -1,6 +1,5 @@
 use bindgen::builder;
 use cmake::Config;
-use std::env;
 
 fn cuda_configuration() {
     let cudadir = match option_env!("CUDA_INSTALL_DIR") {

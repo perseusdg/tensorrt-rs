@@ -115,6 +115,16 @@ enum class TensorLocation {
 };
 typedef enum TensorLocation TensorLocation_t;
 
+enum class ReduceOperation{
+    kSUM = 0,
+    kPROD = 1,
+    kMAX = 2,
+    kMIN = 3,
+    kAVG = 4,
+};
+
+typedef enum ReduceOperation ReduceOperation_t;
+
 #ifdef __cplusplus
 };
 #endif

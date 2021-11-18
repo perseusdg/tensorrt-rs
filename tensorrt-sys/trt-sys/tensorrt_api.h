@@ -24,5 +24,8 @@
 #include "TRTLayer/TRTGatherLayer.h"
 #include "TRTLayer/TRTActivationLayer.h"
 #include "TRTLayer/TRTPoolingLayer.h"
+#include "TRTLayer/TRTPaddingLayer.h"
+#include "TRTLayer/TRTQuantizeLayer.h"
+#include "TRTLayer/TRTReduceLayer.h"
 
 #endif //TENSRORT_SYS_TENSORRT_API_H

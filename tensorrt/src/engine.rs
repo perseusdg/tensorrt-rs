@@ -11,7 +11,7 @@ use tensorrt_sys::{
     engine_get_binding_data_type, engine_get_binding_dimensions, engine_get_binding_index,
     engine_get_binding_name, engine_get_device_memory_size, engine_get_location,
     engine_get_max_batch_size, engine_get_nb_bindings, engine_get_nb_layers,
-    engine_get_workspace_size, engine_is_refittable, engine_serialize, host_memory_get_data,
+    engine_is_refittable, engine_serialize, host_memory_get_data,
     host_memory_get_size, nvinfer1_ICudaEngine,
 };
 
@@ -98,10 +98,6 @@ impl Engine {
 
     pub fn get_nb_layers(&self) -> i32 {
         unsafe { engine_get_nb_layers(self.internal_engine) }
-    }
-
-    pub fn get_workspace_size(&self) -> usize {
-        unsafe { engine_get_workspace_size(self.internal_engine) }
     }
 
     pub fn create_execution_context(&self) -> Context {

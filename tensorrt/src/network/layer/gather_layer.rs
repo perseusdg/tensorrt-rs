@@ -4,6 +4,7 @@ use tensorrt_sys::{
     gather_layer_get_gather_axis, gather_layer_set_gather_axis, nvinfer1_IGatherLayer,
 };
 
+
 #[derive(Layer)]
 pub struct GatherLayer {
     pub(crate) internal_layer: *mut nvinfer1_IGatherLayer,

@@ -3,12 +3,18 @@ pub use element_wise_layer::{ElementWiseLayer, ElementWiseOperation};
 pub use gather_layer::GatherLayer;
 pub use identity_layer::IdentityLayer;
 pub use pooling_layer::{PaddingMode, PoolingLayer, PoolingType};
+pub use padding_layer::PaddingLayer;
+pub use quantize_layer::QuantizeLayer;
+pub use reduce_layer::ReduceLayer;
 
 mod activation_layer;
 mod element_wise_layer;
 mod gather_layer;
 mod identity_layer;
 mod pooling_layer;
+mod padding_layer;
+mod quantize_layer;
+mod reduce_layer;
 
 use crate::engine::DataType;
 use crate::network::Tensor;
@@ -52,6 +58,7 @@ pub enum LayerType {
     Identity,
     PluginV2,
     Slice,
+    Quantize,
 }
 
 pub trait Layer: private::LayerPrivate {
