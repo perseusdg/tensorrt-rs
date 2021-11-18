@@ -6,6 +6,7 @@ pub use pooling_layer::{PaddingMode, PoolingLayer, PoolingType};
 pub use padding_layer::PaddingLayer;
 pub use quantize_layer::QuantizeLayer;
 pub use reduce_layer::ReduceLayer;
+pub use resize_layer::ResizeLayer;
 
 mod activation_layer;
 mod element_wise_layer;
@@ -15,6 +16,7 @@ mod pooling_layer;
 mod padding_layer;
 mod quantize_layer;
 mod reduce_layer;
+mod resize_layer;
 
 use crate::engine::DataType;
 use crate::network::Tensor;
@@ -59,6 +61,7 @@ pub enum LayerType {
     PluginV2,
     Slice,
     Quantize,
+    Resize,
 }
 
 pub trait Layer: private::LayerPrivate {

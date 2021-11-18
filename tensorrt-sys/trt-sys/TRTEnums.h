@@ -122,8 +122,43 @@ enum class ReduceOperation{
     kMIN = 3,
     kAVG = 4,
 };
-
 typedef enum ReduceOperation ReduceOperation_t;
+
+enum class ResizeMode{
+    kNEAREST = 0,
+    kLINEAR = 1,
+};
+typedef enum ResizeMode ResizeMode_t;
+
+enum class ResizeCoordinateTransformation {
+    kALIGN_CORNERS = 0,
+    kASYMMETRIC = 1,
+    kHALF_PIXEL = 2,
+};
+typedef enum ResizeCoordinateTransformation ResizeCoordinateTransformation_t;
+
+enum class ResizeSelector {
+    kFORMULA = 0,
+    kUPPER = 1,
+};
+typedef enum ResizeSelector ResizeSelector_t;
+
+enum class ResizeRoundMode {
+    kHALF_UP = 0,
+    KHALF_DOWN = 1,
+    KFLOOR = 2,
+    kCEIL = 3,
+};
+typedef enum ResizeRoundMode ResizeRoundMode_t;
+
+enum class ScaleMode {
+    kUNIFORM = 0,
+    kCHANNEL = 1,
+    kELEMENTWISE = 2,
+};
+typedef enum ScaleMode ScaleMode_t;
+
+
 
 #ifdef __cplusplus
 };
