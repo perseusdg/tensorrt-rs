@@ -62,6 +62,7 @@ pub enum LayerType {
     Slice,
     Quantize,
     Resize,
+    Scatter,
 }
 
 pub trait Layer: private::LayerPrivate {
@@ -162,7 +163,7 @@ pub struct BaseLayer {
 mod tests {
     use super::*;
     use crate::builder::{Builder, NetworkBuildFlags};
-    use crate::dims::DimsCHW;
+    use crate::dims::Dims3;
     use crate::engine::DataType;
     use crate::network::Network;
     use crate::runtime::Logger;
@@ -186,7 +187,7 @@ mod tests {
         let network = builder.create_network_v2(NetworkBuildFlags::DEFAULT);
 
         let uff_parser = UffParser::new();
-        let dim = DimsCHW::new(1, 28, 28);
+        let dim = Dims3::new(1, 28, 28);
 
         uff_parser
             .register_input("in", dim, UffInputOrder::Nchw)
@@ -284,7 +285,7 @@ mod tests {
         let output_tensor = uff_network.get_layer(21).get_output(0);
 
         let network = create_network(&logger);
-        let tensor = network.add_input("new_input", DataType::Float, DimsCHW::new(1, 28, 28));
+        let tensor = network.add_input("new_input", DataType::Float, Dims3::new(1, 28, 28));
         let layer = network.add_identity_layer(&tensor);
 
         assert_eq!(layer.get_input(0).get_name(), "new_input");

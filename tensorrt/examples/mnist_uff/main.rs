@@ -5,7 +5,7 @@ use std::path::Path;
 use tensorrt_rs::builder::{Builder, NetworkBuildFlags};
 use tensorrt_rs::context::ExecuteInput;
 use tensorrt_rs::data_size::GB;
-use tensorrt_rs::dims::DimsCHW;
+use tensorrt_rs::dims::Dims3;
 use tensorrt_rs::engine::Engine;
 use tensorrt_rs::profiler::{DefaultProfiler, Profiler};
 use tensorrt_rs::runtime::Logger;
@@ -17,14 +17,14 @@ fn create_engine(logger: &Logger, uff_file: UffFile) -> Engine {
     let network = builder.create_network_v2(NetworkBuildFlags::DEFAULT);
 
     let uff_parser = UffParser::new();
-    let dim = DimsCHW::new(1, 28, 28);
+    let dim = Dims3::new(1, 28, 28);
     uff_parser
         .register_input("in", dim, UffInputOrder::Nchw)
         .unwrap();
     uff_parser.register_output("out").unwrap();
     uff_parser.parse(&uff_file, &network).unwrap();
 
-    builder.build_cuda_engine(&network)
+    builder.build_cuda_engine_with_config(&network)
 }
 
 fn main() {

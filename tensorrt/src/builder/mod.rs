@@ -18,8 +18,9 @@ use tensorrt_sys::create_network_v2;
 use tensorrt_sys::{
     build_cuda_engine_with_config,create_infer_builder,create_infer_builder_config,
     builder_config_set_max_workspace_size,builder_config_set_dla_core,builder_config_get_dla_core,
-    builder_config_set_default_global_device_type,builder_config_set_gpu_fallback,
+    builder_config_set_default_global_device_type,builder_config_set_gpu_fallback,builder_get_dla_max_batch_size,builder_get_nb_dla_cores,
     builder_config_set_avg_timing_iterations,builder_config_set_min_timing_iterations,builder_config_set_int8_mode,
+    builder_config_get_min_timing_iterations,builder_config_get_avg_timing_iterations,
     builder_config_set_fp16_mode,builder_config_get_int8_mode,builder_config_get_fp16_mode,builder_config_get_default_global_device_type,
     builder_config_set_device_type_layer,builder_config_get_device_type_layer,builder_config_is_device_type_set,
     builder_config_reset_device_type,builder_config_run_on_dla,builder_config_set_strict_type_constraints,
@@ -29,7 +30,7 @@ use tensorrt_sys::{
     builder_config_set_safety_scope,builder_config_get_safety_scope,builder_config_get_max_workspace_size,
     builder_set_engine_capability,builder_get_engine_capability,builder_config_set_profile_stream,builder_config_get_profile_stream,
     builder_config_reset,destroy_builder,builder_set_max_batch_size,builder_platform_has_fast_fp16,builder_platform_has_fast_int8,
-    builder_get_max_batch_size,builder_get_max_dla_batch_size,builder_get_nb_dla_cores,builder_reset
+    builder_get_max_batch_size,builder_get_max_dla_batch_size,builder_reset, builder_config_set_engine_capability,builder_config_get_engine_capability
 };
 
 #[repr(C)]
@@ -73,8 +74,16 @@ impl<'a> Builder<'a> {
         }
     }
 
+    pub fn get_max_dla_batch_size(&self) -> i32 {
+        unsafe {builder_get_dla_max_batch_size(self.internal_builder) as i32}
+    }
+
     pub fn get_max_workspace_size(&self) -> usize {
         unsafe {builder_config_get_max_workspace_size(self.internal_builder_config) as usize}
+    }
+
+    pub fn get_nb_dla_cores(&self) -> i32 {
+        unsafe {builder_get_nb_dla_cores(self.internal_builder) as i32}
     }
 
     pub fn set_max_workspace_size(&self, ws: usize) {
@@ -118,11 +127,21 @@ impl<'a> Builder<'a> {
     }
 
     pub fn set_min_timing_iterations(&self,time:i32){
-        unsafe{builder_config_set_avg_timing_iterations(self.internal_builder_config,time)}
+        unsafe{builder_config_set_min_timing_iterations(self.internal_builder_config,time)}
+    }
+
+    pub fn get_avg_timing_iterations(&self) -> i32 {
+        unsafe {builder_config_get_avg_timing_iterations(self.internal_builder_config)}
+    }
+
+    pub fn get_min_timing_iterations(&self) -> i32 {
+        unsafe {builder_config_get_min_timing_iterations(self.internal_builder_config)}
     }
 
     pub fn set_int8_mode(&self,mode:bool){
-        unsafe {builder_config_set_int8_mode(self.internal_builder_config)}
+        if mode {
+            unsafe { builder_config_set_int8_mode(self.internal_builder_config) }
+        }
     }
 
     pub fn get_int8_mode(&self) -> bool{
@@ -231,18 +250,18 @@ impl<'a> Builder<'a> {
     }
 
     pub fn set_engine_capability(&self, engine_capability: EngineCapability) {
-        unsafe { builder_set_engine_capability(self.internal_builder, engine_capability as c_int) }
+        unsafe { builder_config_set_engine_capability(self.internal_builder_config, engine_capability as i32) }
     }
 
     pub fn get_engine_capability(&self) -> EngineCapability {
-        let primitive = unsafe { builder_get_engine_capability(self.internal_builder) };
+        let primitive = unsafe { builder_config_get_engine_capability(self.internal_builder_config) };
         FromPrimitive::from_i32(primitive).unwrap()
 
     }
 
 
 
-    pub fn reset(&self, network: Network) {
+    pub fn reset(&self) {
         unsafe { builder_reset(self.internal_builder)};
         unsafe {builder_config_reset(self.internal_builder_config)};
     }

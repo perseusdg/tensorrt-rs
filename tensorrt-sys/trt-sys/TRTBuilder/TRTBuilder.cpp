@@ -16,6 +16,14 @@ int32_t builder_get_max_batch_size(nvinfer1::IBuilder* builder) {
     return builder->getMaxBatchSize();
 }
 
+int32_t builder_get_dla_max_batch_size(nvinfer1::IBuilder *builder){
+    return builder->getMaxDLABatchSize();
+}
+
+int32_t builder_get_nb_dla_cores(nvinfer1::IBuilder *builder){
+    return builder->getNbDLACores();
+}
+
 nvinfer1::ICudaEngine *build_cuda_engine_with_config(nvinfer1::IBuilder *builder,nvinfer1::IBuilderConfig* config,nvinfer1::INetworkDefinition *network){
     return builder->buildEngineWithConfig(*network,*config);
 }
@@ -50,6 +58,14 @@ void builder_config_set_avg_timing_iterations(nvinfer1::IBuilderConfig* config,i
 
 void builder_config_set_min_timing_iterations(nvinfer1::IBuilderConfig* config,int time){
     config->setMinTimingIterations(time);
+}
+
+int32_t builder_config_get_avg_timing_iterations(nvinfer1::IBuilderConfig *config){
+    return config->getAvgTimingIterations();
+}
+
+int32_t builder_config_get_min_timing_iterations(nvinfer1::IBuilderConfig *config){
+    return config->getMinTimingIterations();
 }
 
 void builder_config_set_int8_mode(nvinfer1::IBuilderConfig* config){
@@ -211,11 +227,6 @@ bool builder_platform_has_fast_int8(nvinfer1::IBuilder* builder) {
 
 int builder_get_max_dla_batch_size(nvinfer1::IBuilder* builder) {
     return builder->getMaxBatchSize();
-}
-
-
-int builder_get_nb_dla_cores(nvinfer1::IBuilder* builder) {
-    return builder->getNbDLACores();
 }
 
 nvinfer1::IBuilder *create_infer_builder(Logger_t *logger) {

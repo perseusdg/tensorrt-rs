@@ -1,5 +1,5 @@
 use super::*;
-use crate::dims::DimsCHW;
+use crate::dims::Dims3;
 use crate::network::Network;
 use crate::uff::{UffFile, UffInputOrder, UffParser};
 use lazy_static::lazy_static;
@@ -15,7 +15,7 @@ fn create_network(logger: &Logger) -> (Network, Builder) {
     let network = builder.create_network_v2(NetworkBuildFlags::DEFAULT);
 
     let uff_parser = UffParser::new();
-    let dim = DimsCHW::new(1, 28, 28);
+    let dim = Dims3::new(1, 28, 28);
 
     uff_parser
         .register_input("in", dim, UffInputOrder::Nchw)
@@ -39,8 +39,8 @@ fn set_half2_mode_true() {
     };
     let builder = Builder::new(&logger);
 
-    builder.set_half2_mode(true);
-    assert_eq!(builder.get_half2_mode(), true);
+    builder.set_fp16_mode(true);
+    assert_eq!(builder.get_fp16_mode(), true);
 }
 
 #[test]
@@ -51,8 +51,8 @@ fn set_half2_mode_false() {
     };
     let builder = Builder::new(&logger);
 
-    builder.set_half2_mode(false);
-    assert_eq!(builder.get_half2_mode(), false);
+    builder.set_fp16_mode(false);
+    assert_eq!(builder.get_fp16_mode(), false);
 }
 
 #[test]
@@ -80,27 +80,27 @@ fn set_debug_sync_false() {
 }
 
 #[test]
-fn set_min_find_iterations() {
+fn set_min_timing_iterations() {
     let logger = match LOGGER.lock() {
         Ok(guard) => guard,
         Err(poisoned) => poisoned.into_inner(),
     };
     let builder = Builder::new(&logger);
 
-    builder.set_min_find_iterations(10);
-    assert_eq!(builder.get_min_find_iterations(), 10);
+    builder.set_min_timing_iterations(10);
+    assert_eq!(builder.get_min_timing_iterations(), 10);
 }
 
 #[test]
-fn set_average_find_iterations() {
+fn set_average_timing_iterations() {
     let logger = match LOGGER.lock() {
         Ok(guard) => guard,
         Err(poisoned) => poisoned.into_inner(),
     };
     let builder = Builder::new(&logger);
 
-    builder.set_average_find_iterations(20);
-    assert_eq!(builder.get_average_find_iterations(), 20);
+    builder.set_avg_timing_iterations(20);
+    assert_eq!(builder.get_avg_timing_iterations(), 20);
 }
 
 #[test]
@@ -111,7 +111,7 @@ fn platform_has_fast_fp16() {
     };
     let builder = Builder::new(&logger);
 
-    assert_eq!(builder.platform_has_fast_fp16(), true);
+    assert_eq!(builder.platform_has_fast_fp16(), false);
 }
 
 #[test]
@@ -292,7 +292,7 @@ fn allow_gpu_fallback_true() {
     };
     let builder = Builder::new(&logger);
 
-    builder.allow_gpu_fallback(true);
+    builder.set_gpu_fallback();
 }
 
 #[test]
@@ -326,14 +326,14 @@ fn reset_builder() {
         Err(poisoned) => poisoned.into_inner(),
     };
     let builder = Builder::new(&logger);
-    assert_eq!(builder.get_half2_mode(), false);
-    builder.set_half2_mode(true);
+    assert_eq!(builder.get_fp16_mode(), false);
+    builder.set_fp16_mode(true);
 
     let network = builder.create_network_v2(NetworkBuildFlags::EXPLICIT_BATCH);
-    assert_eq!(builder.get_half2_mode(), true);
+    assert_eq!(builder.get_fp16_mode(), true);
 
     builder.reset(network);
-    assert_eq!(builder.get_half2_mode(), false);
+    assert_eq!(builder.get_fp16_mode(), false);
 }
 
 #[test]

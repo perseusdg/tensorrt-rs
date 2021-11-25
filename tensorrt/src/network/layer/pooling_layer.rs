@@ -121,7 +121,7 @@ impl PoolingLayer {
 mod tests {
     use super::*;
     use crate::builder::{Builder, NetworkBuildFlags};
-    use crate::dims::{Dim, DimsCHW, DimsHW};
+    use crate::dims::{Dim, Dims3, DimsHW};
     use crate::network::Network;
     use crate::runtime::Logger;
     use lazy_static::lazy_static;
@@ -143,7 +143,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Max, DimsHW::new(10, 10));
 
         assert_eq!(pooling.get_pooling_type(), PoolingType::Max);
@@ -156,7 +156,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Max, DimsHW::new(10, 10));
 
         pooling.set_pooling_type(PoolingType::Average);
@@ -171,7 +171,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Max, DimsHW::new(10, 10));
 
         let dims = pooling.get_window_size();
@@ -186,7 +186,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Max, DimsHW::new(10, 10));
 
         pooling.set_window_size(DimsHW::new(20, 20));
@@ -203,7 +203,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Max, DimsHW::new(10, 10));
 
         let stride = pooling.get_stride();
@@ -218,7 +218,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Max, DimsHW::new(10, 10));
 
         pooling.set_stride(DimsHW::new(20, 20));
@@ -235,7 +235,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Max, DimsHW::new(10, 10));
 
         let padding = pooling.get_padding();
@@ -250,7 +250,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Max, DimsHW::new(10, 10));
 
         pooling.set_padding(DimsHW::new(0, 10));
@@ -266,7 +266,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling =
             network.add_pooling(&input1, PoolingType::MaxAverageBlend, DimsHW::new(10, 10));
 
@@ -280,7 +280,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling =
             network.add_pooling(&input1, PoolingType::MaxAverageBlend, DimsHW::new(10, 10));
 
@@ -295,7 +295,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Average, DimsHW::new(10, 10));
 
         assert_eq!(pooling.get_average_count_excludes_padding(), true);
@@ -308,7 +308,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Average, DimsHW::new(10, 10));
 
         pooling.set_average_count_excludes_padding(false);
@@ -322,7 +322,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Average, DimsHW::new(10, 10));
 
         let padding = pooling.get_pre_padding();
@@ -338,7 +338,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Average, DimsHW::new(10, 10));
 
         pooling.set_pre_padding(DimsHW::new(10, 10));
@@ -355,7 +355,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Average, DimsHW::new(10, 10));
 
         let padding = pooling.get_post_padding();
@@ -371,7 +371,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Average, DimsHW::new(10, 10));
 
         pooling.set_post_padding(DimsHW::new(10, 10));
@@ -388,7 +388,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Average, DimsHW::new(10, 10));
 
         assert_eq!(pooling.get_padding_mode(), PaddingMode::ExplicitRoundDown);
@@ -401,7 +401,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         let pooling = network.add_pooling(&input1, PoolingType::Average, DimsHW::new(10, 10));
 
         pooling.set_padding_mode(PaddingMode::ExplicitRoundUp);

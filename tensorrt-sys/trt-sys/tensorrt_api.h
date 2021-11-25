@@ -29,6 +29,5 @@
 #include "TRTLayer/TRTReduceLayer.h"
 #include "TRTLayer/TRTResizeLayer.h"
 #include "TRTLayer/TRTScaleLayer.h"
-#include "TRTWeights/TRTWeights.h"
 
 #endif //TENSRORT_SYS_TENSORRT_API_H

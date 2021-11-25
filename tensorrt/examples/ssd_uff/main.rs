@@ -6,7 +6,7 @@ use std::path::Path;
 use tensorrt_rs::builder::{Builder, NetworkBuildFlags};
 use tensorrt_rs::context::ExecuteInput;
 use tensorrt_rs::data_size::GB;
-use tensorrt_rs::dims::{Dim, DimsCHW};
+use tensorrt_rs::dims::{Dim, Dims3};
 use tensorrt_rs::engine::Engine;
 use tensorrt_rs::runtime::Logger;
 use tensorrt_rs::uff::{UffFile, UffInputOrder, UffParser};
@@ -17,14 +17,14 @@ fn create_engine(logger: &Logger, uff_file: &UffFile) -> Engine {
     let network = builder.create_network_v2(NetworkBuildFlags::DEFAULT);
 
     let uff_parser = UffParser::new();
-    let dim = DimsCHW::new(3, 300, 300);
+    let dim = Dims3::new(3, 300, 300);
     uff_parser
         .register_input("Input", dim, UffInputOrder::Nchw)
         .unwrap();
     uff_parser.register_output("NMS").unwrap();
     uff_parser.parse(uff_file, &network).unwrap();
 
-    builder.build_cuda_engine(&network)
+    builder.build_cuda_engine_with_config(&network)
 }
 
 //Input formatting logic comes directly from the C++ code in the sampleUffSSD.cpp.

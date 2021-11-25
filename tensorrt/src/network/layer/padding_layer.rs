@@ -1,7 +1,6 @@
 use super::*;
 use tensorrt_rs_derive::Layer;
 use tensorrt_sys::{padding_layer_set_pre_padding, padding_layer_get_pre_padding, padding_layer_set_post_padding, padding_layer_get_post_padding, nvinfer1_IPaddingLayer, nvinfer1_Dims};
-use crate::dims::Dims;
 
 #[derive(Layer)]
 pub struct PaddingLayer{

@@ -158,6 +158,12 @@ enum class ScaleMode {
 };
 typedef enum ScaleMode ScaleMode_t;
 
+enum class ScatterMode {
+    kELEMENT = 0,
+    kND = 1,
+};
+
+typedef enum ScatterMode ScatterMode_t;
 
 
 #ifdef __cplusplus

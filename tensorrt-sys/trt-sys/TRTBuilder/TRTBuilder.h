@@ -14,6 +14,8 @@
 nvinfer1::ICudaEngine *build_cuda_engine_with_config(nvinfer1::IBuilder *builder,nvinfer1::IBuilderConfig* config,nvinfer1::INetworkDefinition *network);
 nvinfer1::IBuilder *create_infer_builder(Logger_t *logger);
 nvinfer1::IBuilderConfig* create_infer_builder_config(nvinfer1::IBuilder *builder);
+int32_t builder_get_dla_max_batch_size(nvinfer1::IBuilder *builder);
+int32_t builder_get_nb_dla_cores(nvinfer1::IBuilder *builder);
 void builder_config_set_max_workspace_size(nvinfer1::IBuilderConfig* config,size_t batch_size);
 void builder_config_set_dla_core(nvinfer1::IBuilderConfig* config,int dla_core);
 int builder_config_get_dla_core(nvinfer1::IBuilderConfig* config);
@@ -21,6 +23,8 @@ void builder_config_set_default_global_device_type(nvinfer1::IBuilderConfig* con
 void builder_config_set_gpu_fallback(nvinfer1::IBuilderConfig* config);
 void builder_config_set_avg_timing_iterations(nvinfer1::IBuilderConfig* config,int time);
 void builder_config_set_min_timing_iterations(nvinfer1::IBuilderConfig* config,int time);
+int32_t builder_config_get_avg_timing_iterations(nvinfer1::IBuilderConfig *config);
+int32_t builder_config_get_min_timing_iterations(nvinfer1::IBuilderConfig *config);
 void builder_config_set_int8_mode(nvinfer1::IBuilderConfig* config);
 bool builder_config_get_int8_mode(nvinfer1::IBuilderConfig* config);
 void builder_config_set_fp16_mode(nvinfer1::IBuilderConfig* config);
@@ -57,7 +61,6 @@ int32_t builder_get_max_batch_size(nvinfer1::IBuilder* builder);
 bool builder_platform_has_fast_fp16(nvinfer1::IBuilder* builder);
 bool builder_platform_has_fast_int8(nvinfer1::IBuilder* builder);
 int builder_get_max_dla_batch_size(nvinfer1::IBuilder* builder);
-int builder_get_nb_dla_cores(nvinfer1::IBuilder* builder);
 void builder_set_engine_capability(nvinfer1::IBuilder* builder, EngineCapabiliy_t engine_capability);
 EngineCapabiliy_t builder_get_engine_capability(nvinfer1::IBuilder* builder);
 nvinfer1::INetworkDefinition *create_network_v2(nvinfer1::IBuilder* builder, uint32_t flags);

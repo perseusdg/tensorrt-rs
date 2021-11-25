@@ -1,6 +1,6 @@
 use super::*;
 use tensorrt_rs_derive::Layer;
-use tensorrt_sys::{reduce_layer_set_operation, reduce_layer_get_operation, reduce_layer_set_reduce_axis, reduce_layer_get_reduce_axis, reduce_layer_set_keep_dimensions, reduce_layer_get_keep_dimensions, nvinfer1_IReduceLayer, ReduceOperation_t};
+use tensorrt_sys::{reduce_layer_set_operation, reduce_layer_get_operation, reduce_layer_set_reduce_axis, reduce_layer_get_reduce_axis, reduce_layer_set_keep_dimensions, reduce_layer_get_keep_dimensions, nvinfer1_IReduceLayer};
 
 #[repr(C)]
 #[derive(Eq, PartialEq, Debug, FromPrimitive)]
@@ -20,7 +20,7 @@ pub struct ReduceLayer{
 
 impl ReduceLayer{
     pub fn set_operation(&self,op:ReduceOperation) {
-        unsafe { reduce_layer_set_operation(self.internal_layer,op as c_int) }
+        unsafe { reduce_layer_set_operation(self.internal_layer,op as i32) }
     }
 
     pub fn get_operation(&self) -> ReduceOperation {

@@ -176,7 +176,7 @@ mod tests {
     use super::*;
     use crate::builder::{Builder, NetworkBuildFlags};
     use crate::data_size::GB;
-    use crate::dims::DimsCHW;
+    use crate::dims::Dims3;
     use crate::runtime::{Logger, Runtime};
     use crate::uff::{UffFile, UffInputOrder, UffParser};
     use lazy_static::lazy_static;
@@ -195,7 +195,7 @@ mod tests {
         let network = builder.create_network_v2(NetworkBuildFlags::DEFAULT);
 
         let uff_parser = UffParser::new();
-        let dim = DimsCHW::new(1, 28, 28);
+        let dim = Dims3::new(1, 28, 28);
 
         uff_parser
             .register_input("in", dim, UffInputOrder::Nchw)
@@ -204,7 +204,7 @@ mod tests {
         let uff_file = UffFile::new(Path::new("../assets/lenet5.uff")).unwrap();
         uff_parser.parse(&uff_file, &network).unwrap();
 
-        builder.build_cuda_engine(&network)
+        builder.build_cuda_engine_with_config(&network)
     }
 
     #[test]
@@ -295,16 +295,6 @@ mod tests {
         assert_eq!(engine.get_nb_layers(), 7);
     }
 
-    #[test]
-    fn get_workspace_size() {
-        let logger = match LOGGER.lock() {
-            Ok(guard) => guard,
-            Err(poisoned) => poisoned.into_inner(),
-        };
-        let engine = setup_engine_test_uff(&logger);
-
-        assert_eq!(engine.get_workspace_size(), 0);
-    }
 
     #[test]
     fn serialize() {

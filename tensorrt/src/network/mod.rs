@@ -167,7 +167,7 @@ impl Tensor {
 mod tests {
     use super::*;
     use crate::builder::{Builder, NetworkBuildFlags};
-    use crate::dims::{DimsCHW, DimsHW};
+    use crate::dims::{Dims3, DimsHW};
     use crate::runtime::Logger;
     use crate::uff::{UffFile, UffInputOrder, UffParser};
     use layer::LayerType;
@@ -189,7 +189,7 @@ mod tests {
         let network = builder.create_network_v2(NetworkBuildFlags::DEFAULT);
 
         let uff_parser = UffParser::new();
-        let dim = DimsCHW::new(1, 28, 28);
+        let dim = Dims3::new(1, 28, 28);
 
         uff_parser
             .register_input("in", dim, UffInputOrder::Nchw)
@@ -243,7 +243,7 @@ mod tests {
         };
         let network = create_network(&logger);
 
-        let tensor = network.add_input("new_input", DataType::Float, DimsCHW::new(1, 28, 28));
+        let tensor = network.add_input("new_input", DataType::Float, Dims3::new(1, 28, 28));
         assert_eq!(tensor.get_name(), "new_input");
     }
 
@@ -290,7 +290,7 @@ mod tests {
         let output_tensor = uff_network.get_layer(21).get_output(0);
 
         let network = create_network(&logger);
-        let tensor = network.add_input("new_input", DataType::Float, DimsCHW::new(1, 28, 28));
+        let tensor = network.add_input("new_input", DataType::Float, Dims3::new(1, 28, 28));
         let layer = network.add_identity_layer(&tensor);
 
         assert_eq!(network.get_layer(0).get_input(0).get_name(), "new_input");
@@ -337,7 +337,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let tensor = network.add_input("new_input", DataType::Float, DimsCHW::new(1, 28, 28));
+        let tensor = network.add_input("new_input", DataType::Float, Dims3::new(1, 28, 28));
         network.add_identity_layer(&tensor);
         assert_eq!(network.get_nb_layers(), 1);
     }
@@ -349,8 +349,8 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
-        let input2 = network.add_input("new_input2", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
+        let input2 = network.add_input("new_input2", DataType::Float, Dims3::new(1, 28, 28));
         network.add_element_wise_layer(&input1, &input2, ElementWiseOperation::Sum);
 
         assert_eq!(network.get_nb_layers(), 1);
@@ -364,8 +364,8 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
-        let input2 = network.add_input("new_input2", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
+        let input2 = network.add_input("new_input2", DataType::Float, Dims3::new(1, 28, 28));
         network.add_gather_layer(&input1, &input2, 1);
 
         assert_eq!(network.get_nb_layers(), 1);
@@ -379,7 +379,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
         network.add_activation(&input1, ActivationType::Relu);
 
         assert_eq!(network.get_layer(0).get_type(), LayerType::Activation);
@@ -392,7 +392,7 @@ mod tests {
             Err(poisoned) => poisoned.into_inner(),
         };
         let network = create_network(&logger);
-        let input1 = network.add_input("new_input1", DataType::Float, DimsCHW::new(1, 28, 28));
+        let input1 = network.add_input("new_input1", DataType::Float, Dims3::new(1, 28, 28));
 
         network.add_pooling(&input1, PoolingType::Max, DimsHW::new(10, 10));
         assert_eq!(network.get_layer(0).get_type(), LayerType::Pooling);

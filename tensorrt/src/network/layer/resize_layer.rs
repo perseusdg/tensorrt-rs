@@ -1,7 +1,7 @@
 use std::os::raw::c_float;
 use super::*;
 use tensorrt_rs_derive::Layer;
-use tensorrt_sys::{resize_layer_set_output_dimensions, resize_layer_get_output_dimensions, resize_layer_set_scales, resize_layer_get_scales, resize_layer_set_resize_mode, resize_layer_get_resize_mode, resize_layer_set_coordinate_transformation, resize_layer_get_coordinate_transformation, resize_layer_set_selector_for_single_pixel, resize_layer_get_selector_for_single_pixel, resize_layer_set_nearest_rounding, resize_layer_get_nearest_rounding, resize_Layer_set_input, nvinfer1_IResizeLayer, nvinfer1_Dims};
+use tensorrt_sys::{resize_layer_set_output_dimensions, resize_layer_get_output_dimensions, resize_layer_set_scales, resize_layer_get_scales, resize_layer_set_resize_mode, resize_layer_get_resize_mode, resize_layer_set_coordinate_transformation, resize_layer_get_coordinate_transformation, resize_layer_set_selector_for_single_pixel, resize_layer_get_selector_for_single_pixel, resize_layer_set_nearest_rounding, resize_layer_get_nearest_rounding, resize_Layer_set_input, nvinfer1_IResizeLayer};
 use crate::dims::{Dim, Dims};
 
 #[repr(C)]
