@@ -201,6 +201,7 @@ fn is_device_type_set_true() {
     assert_eq!(builder.is_device_type_set(&layer), true);
 }
 
+
 #[test]
 fn is_device_type_set_false() {
     let logger = match LOGGER.lock() {
@@ -273,6 +274,7 @@ fn can_run_on_dla() {
     assert_eq!(builder.can_run_on_dla(&layer), true);
 }
 
+#[cfg(target_arch = "aarch64")]
 #[test]
 fn get_max_dla_batch_size() {
     let logger = match LOGGER.lock() {
@@ -284,6 +286,7 @@ fn get_max_dla_batch_size() {
     assert_eq!(builder.get_max_dla_batch_size(), 1);
 }
 
+#[cfg(target_arch = "aarch64")]
 #[test]
 fn allow_gpu_fallback_true() {
     let logger = match LOGGER.lock() {
@@ -295,6 +298,7 @@ fn allow_gpu_fallback_true() {
     builder.set_gpu_fallback();
 }
 
+#[cfg(target_arch = "aarch64")]
 #[test]
 fn get_nb_dla_cores() {
     let logger = match LOGGER.lock() {
@@ -306,6 +310,7 @@ fn get_nb_dla_cores() {
     assert_eq!(builder.get_nb_dla_cores(), 0);
 }
 
+#[cfg(target_arch = "aarch64")]
 #[test]
 fn set_dla_core() {
     let logger = match LOGGER.lock() {
@@ -332,7 +337,7 @@ fn reset_builder() {
     let network = builder.create_network_v2(NetworkBuildFlags::EXPLICIT_BATCH);
     assert_eq!(builder.get_fp16_mode(), true);
 
-    builder.reset(network);
+    builder.reset();
     assert_eq!(builder.get_fp16_mode(), false);
 }
 

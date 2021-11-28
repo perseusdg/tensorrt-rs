@@ -2,8 +2,8 @@
 // Created by mason on 8/25/19.
 //
 
-#ifndef TENSRORT_SYS_TENSORRT_API_H
-#define TENSRORT_SYS_TENSORRT_API_H
+#ifndef TENSORRT_SYS_TENSORRT_API_H
+#define TENSORRT_SYS_TENSORRT_API_H
 #include <NvInfer.h>
 
 #include "TRTEnums.h"
@@ -29,5 +29,9 @@
 #include "TRTLayer/TRTReduceLayer.h"
 #include "TRTLayer/TRTResizeLayer.h"
 #include "TRTLayer/TRTScaleLayer.h"
+#include "TRTLayer/TRTConcatenationLayer.h"
+#include "TRTLayer/TRTScatterLayer.h"
+#include "TRTWeights/TRTWeights.h"
+#include "TRTLayer/TRTSliceLayer.h"
 
-#endif //TENSRORT_SYS_TENSORRT_API_H
+#endif //TENSORRT_SYS_TENSORRT_API_H

@@ -33,6 +33,7 @@ file(GLOB source_files
         "TRTLayer/*.cpp"
         "TRTTensor/*.cpp"
         "TRTProfiler/*.cpp"
+        "TRTWeights/*.cpp"
 )
 
 add_library(trt-sys STATIC ${source_files})

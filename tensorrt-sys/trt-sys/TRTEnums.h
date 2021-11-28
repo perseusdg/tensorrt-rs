@@ -165,6 +165,16 @@ enum class ScatterMode {
 
 typedef enum ScatterMode ScatterMode_t;
 
+enum class SliceMode {
+    kDEFAULT = 0,
+    kWRAP = 1,
+    kCLAMP = 2,
+    kFILL = 3,
+    kREFLECT = 4,
+};
+
+typedef enum SliceMode SliceMode_t;
+
 
 #ifdef __cplusplus
 };
