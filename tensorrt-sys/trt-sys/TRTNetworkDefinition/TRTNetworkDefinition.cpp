@@ -76,3 +76,46 @@ network_add_pooling(nvinfer1::INetworkDefinition *network, nvinfer1::ITensor *in
                     nvinfer1::DimsHW dims) {
     return network->addPooling(*input, poolingType, dims);
 }
+
+
+nvinfer1::IConcatenationLayer *
+network_add_concatenation(nvinfer1::INetworkDefinition *network,nvinfer1::ITensor *input,int32_t nbInputs){
+    return network->addConcatenation(reinterpret_cast<nvinfer1::ITensor *const *>(input), nbInputs);
+}
+
+nvinfer1::IResizeLayer *
+network_add_resize(nvinfer1::INetworkDefinition *network,nvinfer1::ITensor *input){
+    return network->addResize(*input);
+}
+nvinfer1::IReduceLayer *
+network_add_reduce(nvinfer1::INetworkDefinition *network,nvinfer1::ITensor *input,nvinfer1::ReduceOperation reduceOperation,uint32_t axes,bool keepDimensions){
+    return network->addReduce(*input,reduceOperation,axes,keepDimensions);
+}
+
+nvinfer1::IPaddingLayer *
+network_add_padding(nvinfer1::INetworkDefinition *network,nvinfer1::ITensor *input,nvinfer1::Dims prePadding,nvinfer1::Dims postPadding){
+    return network->addPaddingNd(*input,prePadding,postPadding);
+}
+
+nvinfer1::IScaleLayer *
+network_add_scale(nvinfer1::INetworkDefinition *network,nvinfer1::ITensor *input,nvinfer1::ScaleMode scaleMode,nvinfer1::Weights shift,nvinfer1::Weights scale,nvinfer1::Weights power){
+    network->addScale(*input,scaleMode,shift,scale,power);
+}
+
+nvinfer1::IScatterLayer *
+network_add_scatter(nvinfer1::INetworkDefinition *network,nvinfer1::ITensor *data,nvinfer1::ITensor *indices,nvinfer1::ITensor *updates,nvinfer1::ScatterMode scatterMode){
+    network->addScatter(*data,*indices,*updates,scatterMode);
+}
+
+nvinfer1::ISliceLayer *
+network_add_slice(nvinfer1::INetworkDefinition *network,nvinfer1::ITensor *input,nvinfer1::Dims start,nvinfer1::Dims size,nvinfer1::Dims stride){
+    network->addSlice(*input,start,size,stride);
+}
+
+nvinfer1::IQuantizeLayer *
+network_add_quantize(nvinfer1::INetworkDefinition *network,nvinfer1::ITensor *input,nvinfer1::ITensor *scale){
+    network->addQuantize(*input,*scale);
+}
+
+
+

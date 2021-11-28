@@ -1,0 +1,26 @@
+[package]
+name = "rcudnn"
+description = "safe Rust wrapper for CUDA's cuDNN"
+version = "1.8.0"
+edition = "2018"
+authors = [
+    "Bernhard Schuster <bernhard@ahoi.io>",
+    "Lissa Hyacinth <lissahyacinth@gmail.com>",
+    "MichaelHirn",
+    "Maximilian Goisser",
+]
+repository = "https://github.com/spearow/juice"
+homepage = "https://github.com/spearow/juice/tree/master/rcudnn"
+readme = "../README.md"
+keywords = ["cudnn", "cuda", "nvidia", "neural-network"]
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+libc = "0.2"
+rcudnn-sys = { version = "0.5.0", path = "../cudnn-sys" }
+num = "0.4"
+thiserror = "1.0"
+
+[dev-dependencies]
+env_logger = "0.9"
+log = "0.4"

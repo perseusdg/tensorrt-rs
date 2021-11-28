@@ -1,0 +1,25 @@
+[package]
+name = "rcublas"
+description = "safe Rust wrapper for CUDA's cuBLAS"
+version = "0.6.0"
+edition = "2018"
+authors = [
+	"Bernhard Schuster <bernhard@ahoi.io>",
+	"Lissa Hyacinth <lissahyacinth@gmail.com>",
+	"Maximilian Goisser",
+]
+homepage = "https://github.com/spearow/juice/tree/masster/rcublas"
+repository = "https://github.com/spearow/juice"
+readme = "../README.md"
+keywords = ["cublas", "cuda", "nvidia", "blas"]
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+libc = "0.2"
+rcublas-sys = { version = "0.5.0", path = "../cublas-sys" }
+lazy_static = "1"
+log = "0.4"
+thiserror = "1.0"
+
+[dev-dependencies]
+env_logger = "0.9"

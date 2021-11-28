@@ -1,17 +1,12 @@
 pub mod layer;
 
-use crate::dims::{Dim, DimsHW};
+use crate::dims::*;
 use crate::engine::DataType;
 use layer::*;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_int;
-use tensorrt_sys::{
-    destroy_network, network_add_activation, network_add_element_wise, network_add_gather,
-    network_add_identity_layer, network_add_input, network_add_pooling, network_get_input,
-    network_get_layer, network_get_nb_inputs, network_get_nb_layers, network_get_nb_outputs,
-    network_get_output, network_mark_output, network_remove_tensor, network_unmark_output,
-    nvinfer1_INetworkDefinition, nvinfer1_ITensor, tensor_get_name, tensor_set_dimensions,
-};
+use tensorrt_sys::{destroy_network, network_add_activation, network_add_element_wise, network_add_gather, network_add_identity_layer, network_add_input, network_add_pooling, network_get_input, network_get_layer, network_get_nb_inputs, network_get_nb_layers, network_get_nb_outputs, network_get_output, network_mark_output, network_remove_tensor, network_unmark_output, nvinfer1_INetworkDefinition, nvinfer1_ITensor, tensor_get_name, tensor_set_dimensions, network_add_scale, network_add_slice, network_add_scatter, network_add_resize, network_add_reduce, network_add_quantize, network_add_concatenation, network_add_padding, ScatterMode};
+use crate::weights::{Weight, Weights};
 
 pub struct Network {
     pub(crate) internal_network: *mut nvinfer1_INetworkDefinition,
@@ -136,6 +131,152 @@ impl Network {
         };
         PoolingLayer { internal_layer }
     }
+
+    pub fn add_padding<T:Dim>(
+        &self,
+        input: &Tensor,
+        pre_padding: T,
+        post_padding: T,
+    ) -> PaddingLayer {
+        let internal_layer = unsafe {
+            network_add_padding(
+                self.internal_network,
+                input.internal_tensor,
+                pre_padding.get_internal_dims(),
+                post_padding.get_internal_dims(),
+            )
+        };
+        PaddingLayer { internal_layer }
+    }
+
+   pub fn add_concatenation(
+        &self,
+        input: &Tensor ,
+        nb_inputs : i32,
+    ) -> ConcatenationLayer{
+        let internal_layer = unsafe {
+            network_add_concatenation(
+                self.internal_network,
+                input.internal_tensor,
+                nb_inputs,
+            )
+        };
+       ConcatenationLayer { internal_layer }
+   }
+
+    pub fn add_quantize(
+        &self,
+        input: &Tensor,
+        scale: &Tensor,
+    ) -> QuantizeLayer {
+        let internal_layer = unsafe {
+            network_add_quantize(
+                self.internal_network,
+                input.internal_tensor,
+                scale.internal_tensor
+            )
+        };
+        QuantizeLayer { internal_layer }
+    }
+
+    pub fn add_resize(
+        &self,
+        input: &Tensor,
+    ) -> ResizeLayer {
+        let internal_layer = unsafe {
+            network_add_resize(
+                self.internal_network,
+                input.internal_tensor,
+            )
+        };
+        ResizeLayer { internal_layer }
+    }
+
+    pub fn add_reduce(
+        &self,
+        input: &Tensor,
+        reduce_operation: ReduceOperation,
+        axes: u32,
+        keep_dimensions: bool,
+    ) -> ReduceLayer {
+        let internal_layer = unsafe {
+            network_add_reduce(
+                self.internal_network,
+                input.internal_tensor,
+                reduce_operation as i32,
+                axes as u32,
+                keep_dimensions,
+            )
+        };
+
+        ReduceLayer { internal_layer }
+    }
+
+    pub fn add_scale<T:Weight>(
+        &self,
+        input: &Tensor,
+        scale_mode: ScaleMode,
+        shift: T,
+        scale: T,
+        power: T,
+    ) -> ScaleLayer {
+        let internal_layer = unsafe{
+            network_add_scale(
+                self.internal_network,
+                input.internal_tensor,
+                scale_mode as i32,
+                shift.get_internal_weights(),
+                scale.get_internal_weights(),
+                power.get_internal_weights(),
+            )
+        };
+
+        ScaleLayer { internal_layer }
+    }
+
+    pub fn add_scatter(
+        &self,
+        data: &Tensor,
+        indices: &Tensor,
+        updates: &Tensor,
+        scatter_mode: ScatterMode,
+    ) -> ScatterLayer {
+        let internal_layer = unsafe {
+            network_add_scatter(
+                self.internal_network,
+                data.internal_tensor,
+                indices.internal_tensor,
+                updates.internal_tensor,
+                scatter_mode as i32,
+            )
+        };
+
+        ScatterLayer { internal_layer }
+    }
+
+    pub fn add_slice<T:Dim>(
+        &self,
+        input: &Tensor,
+        start: T,
+        size: T,
+        stride: T,
+    ) -> SliceLayer {
+        let internal_layer = unsafe{
+            network_add_slice(
+                self.internal_network,
+                input.internal_tensor,
+                start.get_internal_dims(),
+                size.get_internal_dims(),
+                stride.get_internal_dims(),
+            )
+        };
+
+        SliceLayer{ internal_layer }
+    }
+
+
+
+
 }
 
 impl Drop for Network {
