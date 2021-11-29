@@ -33,5 +33,10 @@
 #include "TRTLayer/TRTScatterLayer.h"
 #include "TRTWeights/TRTWeights.h"
 #include "TRTLayer/TRTSliceLayer.h"
+#include "TRTLayer/TRTConstantLayer.h"
+#include "TRTLayer/TRTDeconvolutionLayer.h"
+#include "TRTLayer/TRTConvolutionLayer.h"
+#include "TRTLayer/TRTDequantizeLayer.h"
+#include "TRTLayer/TRTFillLayer.h"
 
 #endif //TENSORRT_SYS_TENSORRT_API_H

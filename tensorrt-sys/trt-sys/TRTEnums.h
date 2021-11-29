@@ -103,6 +103,8 @@ enum class PaddingMode {
     kCAFFE_ROUND_UP = 5,
 };
 
+typedef enum PaddingMode PaddingMode_t;
+
 enum class PoolingType {
     kMAX = 0,
     kAVERAGE = 1,
@@ -175,6 +177,12 @@ enum class SliceMode {
 
 typedef enum SliceMode SliceMode_t;
 
+enum class FillOperation{
+    LINSPACE = 0,
+    RANDOM_UNIFORM = 1,
+};
+
+typedef enum FillOperation FillOperation_t;
 
 #ifdef __cplusplus
 };
