@@ -11,6 +11,7 @@ pub use concatenation_layer::ConcatenationLayer;
 pub use scatter_layer::ScatterLayer;
 pub use scale_layer::{ScaleLayer,ScaleMode};
 pub use slice_layer::{SliceMode,SliceLayer};
+pub use convolution_layer::{ConvolutionLayer};
 
 mod activation_layer;
 mod element_wise_layer;
@@ -25,6 +26,7 @@ mod concatenation_layer;
 mod scatter_layer;
 mod scale_layer;
 mod slice_layer;
+mod convolution_layer;
 
 use crate::engine::DataType;
 use crate::network::Tensor;

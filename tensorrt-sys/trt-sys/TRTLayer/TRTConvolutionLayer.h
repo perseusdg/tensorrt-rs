@@ -30,5 +30,5 @@ void convolution_layer_set_padding_nd(nvinfer1::IConvolutionLayer *layer,nvinfer
 nvinfer1::Dims convolution_layer_get_padding_nd(nvinfer1::IConvolutionLayer *layer);
 void convolution_layer_set_dilation_nd(nvinfer1::IConvolutionLayer *layer,nvinfer1::Dims dilation);
 nvinfer1::Dims convolution_layer_get_dilation_nd(nvinfer1::IConvolutionLayer *layer);
-nvinfer1::Dims convolution_layer_set_input(nvinfer1::IConvolutionLayer *layer,int32_t index,nvinfer1::ITensor *input);
+void convolution_layer_set_input(nvinfer1::IConvolutionLayer *layer,int32_t index,nvinfer1::ITensor *input);
 #endif //LIBTRT_TRTCONVOLUTIONLAYER_H

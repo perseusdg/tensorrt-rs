@@ -92,7 +92,7 @@ nvinfer1::Dims convolution_layer_get_dilation_nd(nvinfer1::IConvolutionLayer *la
     return(layer->getDilationNd());
 }
 
-nvinfer1::Dims convolution_layer_set_input(nvinfer1::IConvolutionLayer *layer,int32_t index,nvinfer1::ITensor *input){
+void convolution_layer_set_input(nvinfer1::IConvolutionLayer *layer,int32_t index,nvinfer1::ITensor *input){
     layer->setInput(index,*input);
 }
 
